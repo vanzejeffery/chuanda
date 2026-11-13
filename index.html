@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="utf-8">
+<title>串搭 · 手串项链搭配</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="搭配手串与项链，试排珠序、查看套组配方与彩虹石石谱。">
+<noscript><style>x-dc{display:none}
+html,body{height:auto;overflow:visible}
+.paper{min-height:100dvh}
+.paper > header{max-width:1080px;margin:auto;padding:22px 16px 14px!important;box-sizing:border-box}
+.workspace{box-sizing:border-box;max-width:592px;margin:auto;padding:0 16px calc(100px + env(safe-area-inset-bottom))}
+.work-grid,.preview,.controls{display:grid;gap:14px;align-content:start;min-width:0}
+.controls{padding:16px;border:1px solid #d8c9af;border-radius:20px;background:#fffbefb8}
+.stone-picker{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:4px 2px}
+.recipe-heading{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.dock{position:fixed;left:50%;right:auto;width:min(440px,calc(100% - 28px));transform:translateX(-50%);bottom:calc(12px + env(safe-area-inset-bottom));background-color:#f5ecdad9}
+.toast{position:fixed;z-index:11;left:50%;bottom:calc(92px + env(safe-area-inset-bottom));transform:translateX(-50%);width:max-content;max-width:calc(100vw - 36px);box-sizing:border-box}
+@media(max-width:360px){.stone-picker{grid-template-columns:repeat(5,minmax(0,1fr))}.paper > header .bead{max-width:11px;max-height:11px}}
+@media(min-width:760px){
+  .paper > header{padding-inline:28px!important}
+  .workspace{max-width:616px;padding-inline:28px}
+  .workspace:has(.work-grid){max-width:1080px}
+  .work-grid{grid-template-columns:minmax(0,49fr) minmax(0,51fr);gap:24px}
+  .preview{position:sticky;top:16px}
+  .controls{padding:22px;gap:20px}
+}
+@media(prefers-reduced-motion:reduce){button{transition:none!important}}
+
+</style></noscript>
+</head>
+<body>
+<noscript>请启用 JavaScript 使用串搭工作台。</noscript>
+<x-dc>
+<helmet>
+<style>
+:root{
+--nanhong-hi:#D8484A; --nanhong:#A31E24; --nanhong-lo:#5E0E14;
+--coral-hi:#FFB978;   --coral:#EC7428;   --coral-lo:#A8421A;
+--rose-hi:#EDC3BE;    --rose:#D48589;    --rose-lo:#A65A62;
+--peach-hi:#F8CDB6;   --peach:#E48D7A;   --peach-lo:#B05D52;
+--amber-hi:#FBE7A0;   --amber:#E3A21C;   --amber-lo:#A96D0C;
+--butter-hi:#FFF8D6;  --butter:#F4E07A;  --butter-lo:#CFA736;
+--bone-hi:#FFFBEE;    --bone:#EADFC3;    --bone-lo:#CDBE98;
+--bodhi-hi:#EEEBC6;   --bodhi:#CBD08F;   --bodhi-lo:#9CA35E;
+--mint-hi:#D2F2D8;    --mint:#9FDDB2;    --mint-lo:#6DAF8E;
+--apple-hi:#C2DC6E;   --apple:#8CC43E;   --apple-lo:#557F24;
+--olive-hi:#A8BE4A;   --olive:#7F9A2A;   --olive-lo:#4C6418;
+--teal-hi:#7FD6CD;    --teal:#2FA79D;    --teal-lo:#156A66;
+--sky-hi:#C4F1F5;     --sky:#5ACDDB;     --sky-lo:#2A90A3;
+--oilgreen-hi:#6AA84A;--oilgreen:#33701F;--oilgreen-lo:#163A0E;
+--rapeseed-hi:#F1F4B8;--rapeseed:#CCD968;--rapeseed-lo:#8C9C32;
+--iceblue-hi:#D4EEFF; --iceblue:#2F8DFF; --iceblue-lo:#0C4CB8;
+--hazeblue-hi:#9AA9C6;--hazeblue:#4E6188;--hazeblue-lo:#23304D;
+--lapis-hi:#4A6FD8;   --lapis:#1E3A9C;   --lapis-lo:#0F1F5C;
+--sugilite-hi:#B488DC;--sugilite:#6A2E9C;--sugilite-lo:#3A175E;
+--onyx-hi:#6B5A52;    --onyx:#1E1714;    --onyx-lo:#060403;
+--sandal-hi:#E0B88E;  --sandal:#B98A62;  --sandal-lo:#7A5439;
+--gold-hi:#FFF3B0;    --gold:#D8A93A;    --gold-lo:#8E6816;
+--paper:#F1EBDF; --paper-deep:#E6DDCC; --velvet:#E4E3DF;
+--shadow-warm: 0 8px 22px rgba(120,80,40,.13), 0 1px 3px rgba(120,80,40,.12);
+}
+.paper{ background:
+radial-gradient(ellipse at 20% 0%, rgba(255,250,238,.9), transparent 60%),
+radial-gradient(ellipse at 90% 100%, rgba(214,200,172,.35), transparent 55%),
+var(--paper); }
+.bead{ --size:18px; position:relative; display:inline-block; flex:none; width:var(--size); height:var(--size);
+border-radius:50%; background-color:var(--bone);
+box-shadow: inset calc(var(--size)*-.08) calc(var(--size)*-.12) calc(var(--size)*.18) rgba(20,10,5,.30),
+inset calc(var(--size)*.05) calc(var(--size)*.05) calc(var(--size)*.10) rgba(255,255,255,.28),
+0 calc(var(--size)*.08) calc(var(--size)*.12) rgba(80,50,20,.28); }
+.bead::before{ content:""; position:absolute; inset:0; border-radius:inherit; pointer-events:none;
+background:
+radial-gradient(ellipse 22% 16% at 32% 24%, rgba(255,255,255,.85), rgba(255,255,255,0) 100%),
+radial-gradient(circle at 30% 26%, rgba(255,255,255,.22), transparent 45%),
+radial-gradient(circle at 72% 82%, rgba(255,255,255,.10), transparent 22%); }
+.bead.matte::before{ background:
+radial-gradient(circle at 32% 26%, rgba(255,255,255,.28), transparent 50%); }
+.bead.rondelle{ height:calc(var(--size)*.78); border-radius:46% / 50%; }
+.bead.barrel{ width:calc(var(--size)*.95); height:var(--size); border-radius:38%; }
+.bead.facet{ clip-path:polygon(30% 0,70% 0,100% 30%,100% 70%,70% 100%,30% 100%,0 70%,0 30%); border-radius:18%; }
+.bead-spacer{ display:inline-block; flex:none; width:6px; height:11px; border-radius:3px; background-color:var(--gold);
+box-shadow: 0 1px 2px rgba(120,86,30,.22), 0 0 3px rgba(255,226,140,.3); }
+.strand{ display:flex; align-items:center; justify-content:center; gap:2px; flex-wrap:wrap; }
+.mesh-slab{ position:relative; isolation:isolate; overflow:hidden; border:0;
+box-shadow: inset 0 1px 0 rgba(255,255,255,.35), inset 0 -1px 0 rgba(0,0,0,.08), var(--shadow-warm); }
+.mesh-slab::before{ content:""; position:absolute; inset:0; pointer-events:none; z-index:-1;
+background: linear-gradient(170deg, rgba(255,255,255,.22), transparent 38%); }
+.mesh-slab > *{ position:relative; }
+.rs-dark{ color:var(--bone-hi); }
+.rs-light{ color:var(--onyx); }
+.gold-line{ height:1px; border:0;
+background:linear-gradient(90deg, transparent, var(--gold-lo) 12%, var(--gold-hi) 38%, var(--gold) 55%, var(--gold-lo) 80%, transparent); }
+.gold-ring{ border:1px solid transparent;
+background:
+linear-gradient(160deg, var(--bone-hi), #F5EEDD 60%, #EDE3CC) padding-box,
+linear-gradient(135deg, var(--gold-hi), var(--gold) 40%, var(--gold-lo) 70%, var(--gold)) border-box; }
+.card-bone{ border-radius:18px;
+background:linear-gradient(160deg, var(--bone-hi) 0%, #F5EEDD 60%, var(--bone) 100%); box-shadow:var(--shadow-warm); }
+[data-stone="nanhong"]{background-color:var(--nanhong);background-image:radial-gradient(circle at 32% 28%,var(--nanhong-hi),var(--nanhong) 48%,var(--nanhong-lo))}
+[data-stone="coral"]{background-color:var(--coral);background-image:radial-gradient(circle at 32% 28%,var(--coral-hi),var(--coral) 48%,var(--coral-lo))}
+[data-stone="rose"]{background-color:var(--rose);background-image:radial-gradient(circle at 32% 28%,var(--rose-hi),var(--rose) 48%,var(--rose-lo))}
+[data-stone="peach"]{background-color:var(--peach);background-image:radial-gradient(circle at 32% 28%,var(--peach-hi),var(--peach) 48%,var(--peach-lo))}
+[data-stone="amber"]{background-color:var(--amber);background-image:radial-gradient(circle at 32% 28%,var(--amber-hi),var(--amber) 48%,var(--amber-lo))}
+[data-stone="butter"]{background-color:var(--butter);background-image:radial-gradient(circle at 32% 28%,var(--butter-hi),var(--butter) 48%,var(--butter-lo))}
+[data-stone="bone"]{background-color:var(--bone);background-image:radial-gradient(circle at 32% 28%,var(--bone-hi),var(--bone) 48%,var(--bone-lo))}
+[data-stone="bodhi"]{background-color:var(--bodhi);background-image:radial-gradient(circle at 32% 28%,var(--bodhi-hi),var(--bodhi) 48%,var(--bodhi-lo))}
+[data-stone="mint"]{background-color:var(--mint);background-image:radial-gradient(circle at 32% 28%,var(--mint-hi),var(--mint) 48%,var(--mint-lo))}
+[data-stone="apple"]{background-color:var(--apple);background-image:radial-gradient(circle at 32% 28%,var(--apple-hi),var(--apple) 48%,var(--apple-lo))}
+[data-stone="olive"]{background-color:var(--olive);background-image:radial-gradient(circle at 32% 28%,var(--olive-hi),var(--olive) 48%,var(--olive-lo))}
+[data-stone="teal"]{background-color:var(--teal);background-image:radial-gradient(circle at 32% 28%,var(--teal-hi),var(--teal) 48%,var(--teal-lo))}
+[data-stone="sky"]{background-color:var(--sky);background-image:radial-gradient(circle at 32% 28%,var(--sky-hi),var(--sky) 48%,var(--sky-lo))}
+[data-stone="oilgreen"]{background-color:var(--oilgreen);background-image:radial-gradient(circle at 32% 28%,var(--oilgreen-hi),var(--oilgreen) 48%,var(--oilgreen-lo))}
+[data-stone="rapeseed"]{background-color:var(--rapeseed);background-image:radial-gradient(circle at 32% 28%,var(--rapeseed-hi),var(--rapeseed) 48%,var(--rapeseed-lo))}
+[data-stone="iceblue"]{background-color:var(--iceblue);background-image:radial-gradient(circle at 32% 28%,var(--iceblue-hi),var(--iceblue) 48%,var(--iceblue-lo))}
+[data-stone="hazeblue"]{background-color:var(--hazeblue);background-image:radial-gradient(circle at 32% 28%,var(--hazeblue-hi),var(--hazeblue) 48%,var(--hazeblue-lo))}
+[data-stone="lapis"]{background-color:var(--lapis);background-image:radial-gradient(circle at 32% 28%,var(--lapis-hi),var(--lapis) 48%,var(--lapis-lo))}
+[data-stone="sugilite"]{background-color:var(--sugilite);background-image:radial-gradient(circle at 32% 28%,var(--sugilite-hi),var(--sugilite) 48%,var(--sugilite-lo))}
+[data-stone="onyx"]{background-color:var(--onyx);background-image:radial-gradient(circle at 32% 28%,var(--onyx-hi),var(--onyx) 48%,var(--onyx-lo))}
+[data-stone="sandal"]{background-color:var(--sandal);background-image:radial-gradient(circle at 32% 28%,var(--sandal-hi),var(--sandal) 48%,var(--sandal-lo))}
+[data-stone="gold"]{background-color:#E0B24A;background-image:linear-gradient(180deg,#C99C42,#F4D570 26%,#FFFBEA 36%,#F2CE62 48%,#C79A40 66%,#DDB356 84%,#A88036)}
+html,body{height:100%;overflow:hidden}
+body{margin:0;background:#F1EBDF;color:#1E1714;font-family:system-ui,"PingFang SC","Microsoft YaHei","Noto Sans CJK SC",sans-serif}
+button{font:inherit;color:inherit;-webkit-tap-highlight-color:transparent}
+button:focus-visible{outline:2px solid #D8A93A;outline-offset:2px}
+.serif{font-family:"Songti SC","Noto Serif CJK SC",serif}
+.slot{position:absolute;padding:0;margin:0;border:0;background:none;cursor:pointer;display:block;border-radius:50%}
+.slot .bead,.slot .bead-spacer{display:block;width:100%;height:100%}
+.slot .bead-spacer{border-radius:40%}
+.slot.on{z-index:3}
+.slot.on .bead{outline:2px solid #D8A93A;outline-offset:3px;filter:brightness(1.06) saturate(1.05)}
+.slot.on .bead-spacer{outline:2px solid #A31E24;outline-offset:2px}
+.chip{min-height:40px;padding:0 16px;border-radius:999px;border:1px solid #E0B88E;background:rgba(255,251,238,.55);color:#7A5439;font-size:13px;cursor:pointer;transition:filter .2s,transform .15s}
+.chip:hover{filter:brightness(1.04);border-color:#D8A93A;color:#1E1714}
+.chip:active{transform:scale(.96)}
+.chip.on{background:linear-gradient(135deg,#FFF3B0,#D8A93A 60%,#8E6816);border-color:#D8A93A;color:#1E1714;font-weight:500}
+.pick{background:none;border:0;padding:6px 0 4px;display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;border-radius:12px;transition:transform .2s,background .2s;min-height:60px}
+.pick:hover{transform:translateY(-2px);background:rgba(255,255,255,.55)}
+.pick:active{transform:scale(.92)}
+.seg{flex:1;min-height:44px;border:0;border-radius:999px;background:none;color:#7A5439;font-size:15px;cursor:pointer}
+.seg.on{background:#FFFBEE;color:#1E1714;font-weight:700;box-shadow:0 2px 8px rgba(120,80,40,.16)}
+.dock{position:absolute;left:14px;right:14px;bottom:16px;height:68px;z-index:10;display:flex;align-items:center;gap:4px;padding:6px;box-sizing:border-box;border-radius:34px;background:linear-gradient(180deg,rgba(255,255,255,.46),rgba(255,255,255,.16));-webkit-backdrop-filter:blur(22px) saturate(190%);backdrop-filter:blur(22px) saturate(190%);border:1px solid rgba(255,255,255,.62);box-shadow:inset 0 1px 1px rgba(255,255,255,.95),inset 0 -1px 1px rgba(255,255,255,.35),inset 0 0 14px rgba(255,255,255,.22),0 14px 34px rgba(90,60,30,.18),0 2px 6px rgba(90,60,30,.08)}
+.dock::before{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:radial-gradient(120% 70% at 50% -20%,rgba(255,255,255,.6),transparent 60%),radial-gradient(60% 40% at 50% 120%,rgba(255,255,255,.25),transparent 70%)}
+.tabbtn{position:relative;flex:1;border:0;background:transparent;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:11px;color:#6B5A52;cursor:pointer;min-height:54px;border-radius:28px;transition:background .25s,box-shadow .25s,color .25s}
+.tabbtn:hover{background:rgba(255,255,255,.22)}
+.tabbtn.on{color:#0F1F5C;font-weight:700;background:linear-gradient(180deg,rgba(255,255,255,.72),rgba(255,255,255,.38));box-shadow:inset 0 1px 1px rgba(255,255,255,1),inset 0 -1px 2px rgba(255,255,255,.4),0 3px 10px rgba(90,60,30,.12)}
+.act{min-height:40px;padding:0 14px;border-radius:12px;border:1px solid #CDBE98;background:#FFFBEE;font-size:13px;cursor:pointer}
+.act:hover{border-color:#D8A93A}
+.btn-stone{min-height:46px;border-radius:14px;padding:0 14px;font-size:14px;font-weight:500;cursor:pointer;transition:filter .2s,transform .2s}
+.btn-stone:hover{filter:brightness(1.06) saturate(1.05);transform:translateY(-1px)}
+.mini{min-height:32px;padding:0 10px;border-radius:999px;border:1px solid #E0B88E;background:#FFFBEE;font-size:12px;color:#7A5439;cursor:pointer}
+.mini:hover{border-color:#D8A93A;color:#1E1714}
+.scroll{overflow-y:auto;scrollbar-width:none}
+.scroll::-webkit-scrollbar{display:none}
+@keyframes rs-spin{to{transform:rotate(360deg)}}
+.spin{animation:rs-spin 60s linear infinite}
+.spin .ctr{animation:rs-spin 60s linear infinite reverse}
+@media (prefers-reduced-motion:reduce){.spin,.spin .ctr{animation:none}}
+</style>
+</helmet>
+<div class="paper" style="min-height: 100dvh">
+
+<header style="padding: 22px 24px 10px; display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; align-items: flex-end; justify-content: space-between">
+<div style="display: flex; flex-direction: column; gap: 2px">
+<h1 class="serif" style="margin: 0; font-size: 28px; line-height: 1.1; letter-spacing: .12em; color: #0F1F5C">串搭</h1>
+<div style="font-size: 12px; letter-spacing: .18em; color: #7A5439">手串 · 项链 · 一套配色</div>
+</div>
+<div style="font-size: 12px; color: #7A5439; text-align: right; line-height: 1.5; white-space: pre-line">{{headerNote}}</div>
+</div>
+<div style="display: flex; align-items: center; justify-content: space-between">
+<sc-for list="{{hdr}}" as="h" hint-placeholder-count="20">
+<sc-if value="{{h.isBead}}" hint-placeholder-val="{{true}}">
+<span class="bead" data-stone="{{h.s}}" data-seed="{{h.seed}}" style="--size: 13px; width: 13px; height: 13px"></span>
+</sc-if>
+<sc-if value="{{h.isSp}}" hint-placeholder-val="{{false}}">
+<span class="bead-spacer" data-stone="gold" data-soft="0" style="width: 4px; height: 9px"></span>
+</sc-if>
+</sc-for>
+</div>
+<hr class="gold-line" style="margin: 2px 0 0">
+</header>
+
+<main class="workspace">
+
+<sc-if value="{{isBuild}}" hint-placeholder-val="{{true}}">
+<div class="work-grid">
+<div class="preview">
+<div style="display: flex; gap: 4px; padding: 4px; border-radius: 999px; background: #E6DDCC">
+<button class="seg {{segBr}}" sc-camel-on-click="{{toBracelet}}">手串</button>
+<button class="seg {{segNk}}" sc-camel-on-click="{{toNecklace}}">项链</button>
+</div>
+
+<div class="card-bone gold-ring" style="position: relative; height: {{stageH}}px; border-radius: 20px; overflow: hidden">
+<div style="position: absolute; left: 0; top: 4px; width: {{SW}}px; height: {{SH}}px">
+<svg sc-camel-view-box="0 0 {{SW}} {{SH}}" style="position: absolute; inset: 0; width: {{SW}}px; height: {{SH}}px; overflow: visible; pointer-events: none">
+<sc-if value="{{isBr}}" hint-placeholder-val="{{true}}">
+<circle cx="{{half}}" cy="{{brCy}}" r="{{brR}}" style="fill: none; stroke: #E0B88E; stroke-width: 1.5; opacity: .85"></circle>
+</sc-if>
+<sc-if value="{{isNk}}" hint-placeholder-val="{{false}}">
+<polyline points="{{cord}}" style="fill: none; stroke: #E0B88E; stroke-width: 1.5; opacity: .85"></polyline>
+</sc-if>
+</svg>
+<div style="position: absolute; left: {{centerLeft}}px; top: {{centerTop}}px; width: 150px; display: flex; flex-direction: column; align-items: center; gap: 4px; pointer-events: none; text-align: center">
+<div class="serif" style="font-size: 40px; line-height: 1; font-weight: 700; color: #0F1F5C">{{beadCount}}<span style="font-size: 15px; font-weight: 500; color: #7A5439"> 颗</span></div>
+<div style="font-size: 12px; letter-spacing: .1em; color: #7A5439">{{specLine}}</div>
+<div style="font-size: 12px; color: #B98A62">{{leftLine}}</div>
+</div>
+<sc-for list="{{slots}}" as="b" hint-placeholder-count="16">
+<button class="slot {{b.cls}}" style="left: {{b.l}}px; top: {{b.t}}px; width: {{b.w}}px; height: {{b.h}}px; transform: rotate({{b.rot}}deg)" sc-camel-on-click="{{b.tap}}" aria-label="{{b.label}}">
+<sc-if value="{{b.isB}}" hint-placeholder-val="{{true}}">
+<span class="bead" data-stone="{{b.s}}" data-seed="{{b.seed}}" style="--size: {{b.w}}px"></span>
+</sc-if>
+<sc-if value="{{b.isSp}}" hint-placeholder-val="{{false}}">
+<span class="bead-spacer" data-stone="gold" data-soft="0" data-seed="{{b.seed}}"></span>
+</sc-if>
+</button>
+</sc-for>
+<sc-if value="{{hasPendant}}" hint-placeholder-val="{{false}}">
+<span class="bead-spacer" data-stone="gold" data-soft="0" style="position: absolute; left: {{pend.bl}}px; top: {{pend.bt}}px; width: 6px; height: 12px"></span>
+<button class="slot {{pend.cls}}" style="left: {{pend.l}}px; top: {{pend.t}}px; width: {{pend.w}}px; height: {{pend.w}}px" sc-camel-on-click="{{pend.tap}}" aria-label="{{pend.label}}">
+<span class="bead" data-stone="{{pend.s}}" data-seed="7" style="--size: {{pend.w}}px"></span>
+</button>
+</sc-if>
+</div>
+</div>
+
+</div>
+<div class="controls">
+<sc-if value="{{hasSel}}" hint-placeholder-val="{{false}}">
+<div style="display: flex; flex-direction: column; gap: 8px; padding: 12px; border-radius: 16px; background: #FFFBEE; border: 1px solid #E0B88E">
+<div style="font-size: 13px; color: #7A5439">已选 <b style="color: #1E1714">{{selName}}</b> · {{selPos}}</div>
+<div style="display: flex; gap: 8px; flex-wrap: wrap">
+<button class="act" sc-camel-on-click="{{selLeft}}" aria-label="向前移一位">前移</button>
+<button class="act" sc-camel-on-click="{{selRight}}" aria-label="向后移一位">后移</button>
+<sc-if value="{{canPendant}}" hint-placeholder-val="{{false}}">
+<button class="act" sc-camel-on-click="{{selPendant}}">设为主坠</button>
+</sc-if>
+<button class="act" sc-camel-on-click="{{selRemove}}" style="color: #A31E24; border-color: #D8484A">移除</button>
+<button class="act" sc-camel-on-click="{{selClear}}">完成</button>
+</div>
+<div style="font-size: 12px; color: #B98A62">选中后点下方石头，会插在它后面</div>
+</div>
+</sc-if>
+
+<section style="display: flex; flex-direction: column; gap: 8px">
+<h2 style="margin: 0; font-size: 13px; font-weight: 500; letter-spacing: .2em; color: #7A5439">珠径</h2>
+<div style="display: flex; gap: 8px; flex-wrap: wrap">
+<sc-for list="{{mmChips}}" as="c" hint-placeholder-count="3">
+<button class="chip {{c.cls}}" sc-camel-on-click="{{c.tap}}">{{c.label}}</button>
+</sc-for>
+</div>
+</section>
+
+<sc-if value="{{isNk}}" hint-placeholder-val="{{false}}">
+<section style="display: flex; flex-direction: column; gap: 8px">
+<h2 style="margin: 0; font-size: 13px; font-weight: 500; letter-spacing: .2em; color: #7A5439">项链长度</h2>
+<div style="display: flex; gap: 8px; flex-wrap: wrap">
+<sc-for list="{{lenChips}}" as="c" hint-placeholder-count="4">
+<button class="chip {{c.cls}}" sc-camel-on-click="{{c.tap}}">{{c.label}}</button>
+</sc-for>
+</div>
+</section>
+</sc-if>
+
+<section style="display: flex; flex-direction: column; gap: 8px">
+<h2 style="margin: 0; font-size: 13px; font-weight: 500; letter-spacing: .2em; color: #7A5439">点石加入{{modeName}}</h2>
+<div class="stone-picker">
+<sc-for list="{{palette}}" as="p" hint-placeholder-count="22">
+<button class="pick" sc-camel-on-click="{{p.tap}}" title="{{p.n}}">
+<sc-if value="{{p.isB}}" hint-placeholder-val="{{true}}">
+<span class="bead" data-stone="{{p.k}}" data-seed="{{p.seed}}" style="--size: 30px"></span>
+</sc-if>
+<sc-if value="{{p.isSp}}" hint-placeholder-val="{{false}}">
+<span class="bead-spacer" data-stone="gold" data-soft="0" style="width: 11px; height: 24px; margin: 3px 0"></span>
+</sc-if>
+<span style="font-size: 11px; color: #6B5A52; white-space: nowrap">{{p.short}}</span>
+</button>
+</sc-for>
+</div>
+</section>
+
+<section style="display: flex; flex-direction: column; gap: 8px">
+<h2 style="margin: 0; font-size: 13px; font-weight: 500; letter-spacing: .2em; color: #7A5439">一键串满</h2>
+<div style="display: flex; gap: 8px; flex-wrap: wrap">
+<button class="chip" sc-camel-on-click="{{preRainbow}}">彩虹 · 金隔</button>
+<button class="chip" sc-camel-on-click="{{preTurq}}">松石系</button>
+<button class="chip" sc-camel-on-click="{{preWarm}}">暖玉</button>
+<button class="chip" sc-camel-on-click="{{preQuiet}}">素檀</button>
+<button class="chip" sc-camel-on-click="{{preClear}}">清空</button>
+</div>
+</section>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{isSet}}" hint-placeholder-val="{{false}}">
+<div style="display: flex; flex-direction: column; gap: 14px">
+<div class="card-bone gold-ring" style="position: relative; height: {{stageH}}px; border-radius: 20px; overflow: hidden">
+<div style="position: absolute; left: 0; top: 4px; width: {{SW}}px; height: {{SH}}px">
+<svg sc-camel-view-box="0 0 {{SW}} {{SH}}" style="position: absolute; inset: 0; width: {{SW}}px; height: {{SH}}px; overflow: visible; pointer-events: none">
+<polyline points="{{setCord}}" style="fill: none; stroke: #E0B88E; stroke-width: 1.5; opacity: .85"></polyline>
+</svg>
+<sc-for list="{{setNk}}" as="b" hint-placeholder-count="40">
+<div style="position: absolute; left: {{b.l}}px; top: {{b.t}}px; width: {{b.w}}px; height: {{b.h}}px; transform: rotate({{b.rot}}deg)">
+<sc-if value="{{b.isB}}" hint-placeholder-val="{{true}}">
+<span class="bead" data-stone="{{b.s}}" data-seed="{{b.seed}}" style="--size: {{b.w}}px; display: block; width: 100%; height: 100%"></span>
+</sc-if>
+<sc-if value="{{b.isSp}}" hint-placeholder-val="{{false}}">
+<span class="bead-spacer" data-stone="gold" data-soft="0" style="display: block; width: 100%; height: 100%; border-radius: 40%"></span>
+</sc-if>
+</div>
+</sc-for>
+<sc-if value="{{hasPendant}}" hint-placeholder-val="{{false}}">
+<span class="bead-spacer" data-stone="gold" data-soft="0" style="position: absolute; left: {{setPend.bl}}px; top: {{setPend.bt}}px; width: 6px; height: 12px"></span>
+<span class="bead" data-stone="{{setPend.s}}" data-seed="7" style="position: absolute; left: {{setPend.l}}px; top: {{setPend.t}}px; --size: {{setPend.w}}px; width: {{setPend.w}}px; height: {{setPend.w}}px"></span>
+</sc-if>
+<div class="{{spinCls}}" style="position: absolute; left: 0; top: 0; width: {{SW}}px; height: {{SH}}px; transform-origin: {{spinOrigin}}">
+<sc-for list="{{setBr}}" as="b" hint-placeholder-count="16">
+<div style="position: absolute; left: {{b.l}}px; top: {{b.t}}px; width: {{b.w}}px; height: {{b.h}}px; transform: rotate({{b.rot}}deg)">
+<sc-if value="{{b.isB}}" hint-placeholder-val="{{true}}">
+<span class="bead ctr" data-stone="{{b.s}}" data-seed="{{b.seed}}" style="--size: {{b.w}}px; display: block; width: 100%; height: 100%"></span>
+</sc-if>
+<sc-if value="{{b.isSp}}" hint-placeholder-val="{{false}}">
+<span class="bead-spacer" data-stone="gold" data-soft="0" style="display: block; width: 100%; height: 100%; border-radius: 40%"></span>
+</sc-if>
+</div>
+</sc-for>
+</div>
+<div style="position: absolute; left: 12px; bottom: 10px; font-size: 11px; color: #B98A62; letter-spacing: .12em">项链 {{nkLen}}cm · 手串 16cm 手围</div>
+</div>
+</div>
+
+<div class="card-bone" style="display: flex; flex-direction: column; gap: 14px; padding: 18px; border-radius: 18px">
+<div style="display: flex; align-items: baseline; justify-content: space-between">
+<h2 class="serif" style="margin: 0; font-size: 18px; color: #0F1F5C; letter-spacing: .08em">呼应</h2>
+<div style="font-size: 12px; color: #7A5439">共用石种 {{sharedN}} / {{unionN}}</div>
+</div>
+<div style="display: flex; gap: 6px; align-items: center; min-height: 22px; flex-wrap: wrap">
+<sc-for list="{{shared}}" as="s" hint-placeholder-count="2">
+<span style="display: flex; align-items: center; gap: 5px; padding: 3px 10px 3px 4px; border-radius: 999px; background: #F1EBDF; font-size: 12px">
+<span class="bead" data-stone="{{s.k}}" data-seed="{{s.seed}}" style="--size: 18px"></span>{{s.n}}
+</span>
+</sc-for>
+<sc-if value="{{noShared}}" hint-placeholder-val="{{false}}">
+<span style="font-size: 13px; color: #B98A62">两件暂无共用的石种</span>
+</sc-if>
+</div>
+<hr class="gold-line" style="margin: 0">
+<div style="display: flex; flex-direction: column; gap: 8px">
+<div style="display: flex; justify-content: space-between; font-size: 12px; color: #7A5439">
+<span>暖 {{warmPct}}%</span><span>中性 {{neuPct}}%</span><span>冷 {{coolPct}}%</span>
+</div>
+<div style="display: flex; gap: 3px; height: 14px">
+<div class="mesh-slab" data-stone="nanhong" data-soft=".3" style="width: {{warmPct}}%; border-radius: 7px"></div>
+<div class="mesh-slab" data-stone="bone" data-soft=".3" style="width: {{neuPct}}%; border-radius: 7px"></div>
+<div class="mesh-slab" data-stone="teal" data-soft=".3" style="width: {{coolPct}}%; border-radius: 7px"></div>
+</div>
+</div>
+<ul style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 8px">
+<sc-for list="{{tips}}" as="t" hint-placeholder-count="3">
+<li style="display: flex; gap: 10px; font-size: 13px; line-height: 1.6">
+<span class="bead" data-stone="{{t.dot}}" style="--size: 10px; margin-top: 6px"></span>
+<span>{{t.text}}</span>
+</li>
+</sc-for>
+</ul>
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px">
+<button class="mesh-slab btn-stone rs-dark" data-stone="teal" data-soft=".45" sc-camel-on-click="{{syncBr}}"><span>按项链重串手串</span></button>
+<button class="mesh-slab btn-stone rs-dark" data-stone="lapis" data-soft=".45" sc-camel-on-click="{{syncNk}}"><span>按手串重串项链</span></button>
+</div>
+
+<div class="card-bone" style="display: flex; flex-direction: column; gap: 10px; padding: 16px 18px; border-radius: 18px; font-size: 13px; line-height: 1.7">
+<div class="recipe-heading"><h2 class="serif" style="margin:0;font-size:16px;color:#0F1F5C">配方</h2><button class="act" sc-camel-on-click="{{copyRecipe}}">复制配方</button></div>
+<div><b style="color: #7A5439">手串</b>　{{brRecipe}}</div>
+<div><b style="color: #7A5439">项链</b>　{{nkRecipe}}</div>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{isStones}}" hint-placeholder-val="{{false}}">
+<div style="display: flex; flex-direction: column; gap: 12px">
+<div style="font-size: 13px; color: #7A5439; line-height: 1.6">21 种石 + 金隔片。每颗珠子纹理都不同，</div>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px">
+<sc-for list="{{stoneCards}}" as="c" hint-placeholder-count="10">
+<div class="card-bone" style="display: flex; flex-direction: column; gap: 10px; padding: 12px; border-radius: 16px">
+<div style="display: flex; gap: 10px; align-items: center">
+<sc-if value="{{c.isB}}" hint-placeholder-val="{{true}}">
+<span class="bead" data-stone="{{c.k}}" data-seed="{{c.seed}}" style="--size: 42px"></span>
+</sc-if>
+<sc-if value="{{c.isSp}}" hint-placeholder-val="{{false}}">
+<span style="width: 42px; height: 42px; display: flex; align-items: center; justify-content: center"><span class="bead-spacer" data-stone="gold" data-soft="0" style="width: 14px; height: 30px"></span></span>
+</sc-if>
+<div style="display: flex; flex-direction: column; gap: 3px; min-width: 0">
+<b class="serif" style="font-size: 15px; letter-spacing: .06em">{{c.n}}</b>
+<span style="font-size: 11px; color: {{c.tagColor}}">{{c.tag}}</span>
+</div>
+</div>
+<div style="font-size: 11px; color: #7A5439">手串 {{c.inBr}} · 项链 {{c.inNk}}</div>
+<div style="display: flex; gap: 6px">
+<button class="mini" sc-camel-on-click="{{c.addBr}}" aria-label="加入手串">+ 手串</button>
+<button class="mini" sc-camel-on-click="{{c.addNk}}" aria-label="加入项链">+ 项链</button>
+</div>
+</div>
+</sc-for>
+</div>
+</div>
+</sc-if>
+</main>
+
+<sc-if value="{{hasToast}}" hint-placeholder-val="{{false}}">
+<div role="status" class="toast" style=" padding: 11px 16px; border-radius: 999px; background: #1E1714; color: #FFFBEE; font-size: 13px; text-align: center; box-shadow: 0 8px 22px rgba(120,80,40,.25)">{{toast}}</div>
+</sc-if>
+
+<nav class="dock" aria-label="主导航">
+<button class="tabbtn {{tabBuild}}" sc-camel-on-click="{{goBuild}}">
+<svg width="24" height="24" sc-camel-view-box="0 0 24 24" style="fill: none; stroke: currentColor; stroke-width: 1.6"><circle cx="12" cy="12" r="7.5"></circle><circle cx="12" cy="4.5" r="2" style="fill: currentColor"></circle><circle cx="19.5" cy="12" r="2"></circle><circle cx="12" cy="19.5" r="2"></circle><circle cx="4.5" cy="12" r="2"></circle></svg>
+串珠</button>
+<button class="tabbtn {{tabSet}}" sc-camel-on-click="{{goSet}}">
+<svg width="24" height="24" sc-camel-view-box="0 0 24 24" style="fill: none; stroke: currentColor; stroke-width: 1.6"><path d="M4 3c0 8 3.5 13 8 13s8-5 8-13"></path><circle cx="12" cy="19" r="2.4"></circle><circle cx="12" cy="10" r="3.2"></circle></svg>
+套组</button>
+<button class="tabbtn {{tabStones}}" sc-camel-on-click="{{goStones}}">
+<svg width="24" height="24" sc-camel-view-box="0 0 24 24" style="fill: none; stroke: currentColor; stroke-width: 1.6"><circle cx="7" cy="7" r="3"></circle><circle cx="17" cy="7" r="3"></circle><circle cx="7" cy="17" r="3"></circle><path d="M17 13.5l3.5 3.5-3.5 3.5-3.5-3.5z"></path></svg>
+石谱</button>
+</nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script="" data-props="{&quot;startTab&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;build&quot;,&quot;set&quot;,&quot;stones&quot;],&quot;default&quot;:&quot;build&quot;},&quot;startMode&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;bracelet&quot;,&quot;necklace&quot;],&quot;default&quot;:&quot;bracelet&quot;},&quot;spin&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true},&quot;$preview&quot;:{&quot;width&quot;:393,&quot;height&quot;:852}}">
+class Component extends DCLogic {
+  constructor(...a) {
+    super(...a);
+    this.seq = 11;
+    const br = [];
+    ['nanhong','coral','rose','amber','butter','bone','mint','apple','teal','sky','lapis','sugilite'].forEach((s) => { br.push(s); br.push('spacer'); });
+    const pat = ['bone','bone','teal','bone','bone','sky'];
+    const nk = [];
+    for (let i = 0; i < 46; i++) nk.push(pat[i % 6]);
+    nk.splice(20, 0, 'spacer'); nk.splice(27, 0, 'spacer');
+    this.state = { tab: null, mode: null, brMm: 10, nkMm: 8, nkLen: 45, br: this.mk(br), nk: this.mk(nk), pendant: 'nanhong', sel: null, toast: '', W: (typeof window !== 'undefined' && window.innerWidth) || 393 };
+    try {
+      const saved = JSON.parse(localStorage.getItem('chuanda-design-v1'));
+      if (saved && Array.isArray(saved.br) && Array.isArray(saved.nk)) {
+        const known = this.meta().by;
+        const valid = (items) => items.length <= 250 && items.every((item) => typeof item === 'string' && Object.hasOwn(known, item));
+        if (valid(saved.br) && valid(saved.nk)) {
+          this.state.br = this.mk(saved.br);
+          this.state.nk = this.mk(saved.nk);
+          if ([6, 8, 10, 12, 14].includes(saved.brMm)) this.state.brMm = saved.brMm;
+          if ([4, 6, 8, 10, 12].includes(saved.nkMm)) this.state.nkMm = saved.nkMm;
+          if ([40, 45, 50, 60].includes(saved.nkLen)) this.state.nkLen = saved.nkLen;
+          if (saved.pendant === null || (saved.pendant !== 'spacer' && Object.hasOwn(known, saved.pendant))) {
+            this.state.pendant = saved.pendant;
+          }
+        }
+      }
+    } catch {}
+  }
+  mk(arr) { return arr.map((s) => ({ s: s, id: this.seq++ })); }
+  meta() {
+    if (this._m) return this._m;
+    const L = [
+      ['nanhong','南红','warm'],['coral','珊瑚橙','warm'],['rose','粉晶','warm'],['peach','粉晶桃','warm'],
+      ['amber','蜜蜡','warm'],['butter','鸡油黄','warm'],['bone','骨珠','neutral'],['rapeseed','菜籽黄松','cool'],
+      ['mint','薄荷松石','cool'],['apple','苹果绿松','cool'],['oilgreen','老油绿松','cool'],['olive','橄榄绿','cool'],
+      ['teal','蓝绿松石','cool'],['sky','天空蓝松','cool'],['iceblue','冰魄蓝','cool'],['lapis','青金石','cool'],
+      ['hazeblue','雾霾蓝松','cool'],['sugilite','舒俱来','cool'],['bodhi','星月菩提','neutral'],['sandal','老檀木','neutral'],
+      ['onyx','黑曜','neutral'],['spacer','金隔片','neutral']
+    ];
+    const by = {};
+    const list = L.map((r, i) => { const o = { k: r[0], n: r[1], t: r[2], order: i }; by[r[0]] = o; return o; });
+    const short = { rapeseed: '菜籽黄', mint: '薄荷松', apple: '苹果绿', oilgreen: '老油绿', teal: '蓝绿松', sky: '天空蓝', hazeblue: '雾霾蓝', bodhi: '星月', sandal: '檀木', peach: '粉晶桃', butter: '鸡油黄', iceblue: '冰魄蓝', coral: '珊瑚', sugilite: '舒俱来', olive: '橄榄绿' };
+    list.forEach((o) => { o.short = short[o.k] || o.n; });
+    this._m = { list: list, by: by };
+    return this._m;
+  }
+  componentDidMount() {
+    this._rs = () => { clearTimeout(this._rt); this._rt = setTimeout(() => { if (window.innerWidth && window.innerWidth !== this.state.W) this.setState({ W: window.innerWidth }); }, 60); };
+    window.addEventListener('resize', this._rs); this._rs(); this.repaint();
+  }
+  componentDidUpdate() {
+    this.repaint();
+    const { br, nk, brMm, nkMm, nkLen, pendant } = this.state;
+    const snapshot = JSON.stringify({
+      br: br.map(({ s }) => s), nk: nk.map(({ s }) => s), brMm, nkMm, nkLen, pendant
+    });
+    if (snapshot === this.savedSnapshot) return;
+    this.savedSnapshot = snapshot;
+    try {
+      localStorage.setItem('chuanda-design-v1', snapshot);
+    } catch {}
+  }
+  async copyRecipe() {
+    const { br, nk, brMm, nkMm, nkLen, pendant } = this.state;
+    const tail = pendant ? ' · 主坠 ' + this.meta().by[pendant].n : '';
+    const text = [
+      '手串｜16cm · ' + brMm + 'mm｜' + this.recipe(br),
+      '项链｜' + nkLen + 'cm · ' + nkMm + 'mm｜' + this.recipe(nk) + tail
+    ].join('\n');
+    try {
+      await navigator.clipboard.writeText(text);
+      this.say('已复制套组配方');
+    } catch { this.say('无法访问剪贴板，请在配方区选中文字复制'); }
+  }
+  componentWillUnmount() { clearTimeout(this._pt); clearTimeout(this._tt); clearTimeout(this._rt); if (this._rs) window.removeEventListener('resize', this._rs); }
+  repaint() {
+    clearTimeout(this._pt);
+    this._pt = setTimeout(() => {
+      const RS = window.RainbowStone;
+      if (!RS) { this._pt = setTimeout(() => this.repaint(), 200); return; }
+      document.querySelectorAll('[data-rs-key]').forEach((el) => { if (!el.style.backgroundImage) delete el.dataset.rsKey; });
+      RS.paint();
+    }, 40);
+  }
+  say(msg) { clearTimeout(this._tt); this.setState({ toast: msg }); this._tt = setTimeout(() => this.setState({ toast: '' }), 2200); }
+  tab() { return this.state.tab || this.props.startTab || 'build'; }
+  mode() { return this.state.mode || this.props.startMode || 'bracelet'; }
+  capMm(mode) { return mode === 'bracelet' ? 160 : this.state.nkLen * 10; }
+  mmOf(mode) { return mode === 'bracelet' ? this.state.brMm : this.state.nkMm; }
+  used(items, mm) { return items.reduce((a, it) => a + (it.s === 'spacer' ? 2.6 : mm), 0); }
+  key(mode) { return mode === 'bracelet' ? 'br' : 'nk'; }
+
+  ringLayout(items, mm, cx, cy, R) {
+    const circ = 2 * Math.PI * R, mmPx = circ / 160;
+    let bead = mm * mmPx, sp = 2.6 * mmPx;
+    const need = items.reduce((a, it) => a + (it.s === 'spacer' ? sp : bead), 0);
+    const fit = need > circ ? circ / need : 1; bead *= fit; sp *= fit;
+    const ws = items.map((it) => it.s === 'spacer' ? sp : bead), total = ws.reduce((a, b) => a + b, 0);
+    const left = circ - total, gap = items.length && left < bead ? left / items.length : 0;
+    let acc = -(total + gap * items.length) / 2;
+    return items.map((it, i) => {
+      const w = ws[i], mid = acc + w / 2; acc += w + gap;
+      const ang = Math.PI / 2 + mid / R, x = cx + R * Math.cos(ang), y = cy + R * Math.sin(ang);
+      const isB = it.s !== 'spacer', h = isB ? w : bead * 0.62;
+      return { it: it, i: i, x: x, y: y, w: w, h: h, rot: isB ? 0 : (ang * 180 / Math.PI + 90) };
+    });
+  }
+  neckPath(cx, cy, rx, ry) {
+    const N = 240, t0 = 0.04 * Math.PI, t1 = Math.PI - t0, pts = [], cum = [];
+    let L = 0, prev = null;
+    for (let i = 0; i <= N; i++) {
+      const t = t0 + (t1 - t0) * i / N, p = [cx + rx * Math.cos(t), cy + ry * Math.sin(t)];
+      if (prev) L += Math.hypot(p[0] - prev[0], p[1] - prev[1]);
+      cum.push(L); pts.push(p); prev = p;
+    }
+    return { pts: pts, cum: cum, L: L, cx: cx, bottom: cy + ry, cord: pts.map((p) => p[0].toFixed(1) + ',' + p[1].toFixed(1)).join(' ') };
+  }
+  at(P, s) {
+    s = Math.max(0, Math.min(P.L, s));
+    let i = 1; while (i < P.cum.length - 1 && P.cum[i] < s) i++;
+    const a = P.pts[i - 1], b = P.pts[i], seg = (P.cum[i] - P.cum[i - 1]) || 1, f = (s - P.cum[i - 1]) / seg;
+    return { x: a[0] + (b[0] - a[0]) * f, y: a[1] + (b[1] - a[1]) * f, ang: Math.atan2(b[1] - a[1], b[0] - a[0]) * 180 / Math.PI };
+  }
+  neckLayout(items, mm, lenCm, P) {
+    const mmPx = P.L / (lenCm * 10);
+    let bead = mm * mmPx, sp = 2.6 * mmPx;
+    const need = items.reduce((a, it) => a + (it.s === 'spacer' ? sp : bead), 0);
+    const fit = need > P.L ? P.L / need : 1; bead *= fit; sp *= fit;
+    let acc = P.L / 2 - need * fit / 2;
+    return items.map((it, i) => {
+      const isB = it.s !== 'spacer', w = isB ? bead : sp, q = this.at(P, acc + w / 2); acc += w;
+      return { it: it, i: i, x: q.x, y: q.y, w: w, h: isB ? w : bead * 0.62, rot: isB ? 0 : q.ang };
+    });
+  }
+  pendantAt(P, bead, size) {
+    const top = P.bottom + bead / 2;
+    return { bl: P.cx - 3, bt: top - 1, l: P.cx - size / 2, t: top + 9, w: size };
+  }
+
+  change(mode, fn) {
+    const k = this.key(mode);
+    this.setState((st) => { const o = {}; o[k] = fn(st[k].slice()); return o; });
+  }
+  canFit(mode, items, add) {
+    return this.used(items, this.mmOf(mode)) + (add === 'spacer' ? 2.6 : this.mmOf(mode)) <= this.capMm(mode) + 0.01;
+  }
+  addStone(mode, s) {
+    const k = this.key(mode), items = this.state[k];
+    if (!this.canFit(mode, items, s)) { this.say((mode === 'bracelet' ? '手串' : '项链') + '已串满，先删几颗或换小一号的珠径'); return; }
+    const sel = this.state.sel && this.state.sel.mode === mode && this.state.sel.i >= 0 ? this.state.sel.i : -1;
+    const arr = items.slice(), at = sel >= 0 ? sel + 1 : arr.length;
+    arr.splice(at, 0, { s: s, id: this.seq++ });
+    const o = {}; o[k] = arr;
+    if (sel >= 0) o.sel = { mode: mode, i: at };
+    this.setState(o);
+  }
+  moveSel(d) {
+    const sel = this.state.sel; if (!sel || sel.i < 0) return;
+    const k = this.key(sel.mode), arr = this.state[k].slice(), j = sel.i + d;
+    if (j < 0 || j >= arr.length) return;
+    const t = arr[sel.i]; arr[sel.i] = arr[j]; arr[j] = t;
+    const o = { sel: { mode: sel.mode, i: j } }; o[k] = arr; this.setState(o);
+  }
+  removeSel() {
+    const sel = this.state.sel; if (!sel) return;
+    if (sel.i === -1) { this.setState({ pendant: null, sel: null }); return; }
+    const k = this.key(sel.mode), arr = this.state[k].slice(); arr.splice(sel.i, 1);
+    const o = { sel: null }; o[k] = arr; this.setState(o);
+  }
+  capBeads(mode, mm, nSp) { return Math.max(0, Math.floor((this.capMm(mode) - nSp * 2.6) / mm + 1e-6)); }
+  preset(kind) {
+    const mode = this.mode(), mm = this.mmOf(mode), RB = ['nanhong','coral','rose','amber','butter','bone','mint','apple','teal','sky','lapis','sugilite'];
+    let s = [];
+    const spread = (list, n) => { const r = []; for (let i = 0; i < n; i++) r.push(list[Math.floor(i * list.length / n)]); return r; };
+    const withSp = (arr, k) => { const n = arr.length; for (let j = k; j >= 1; j--) arr.splice(Math.round(j * n / (k + 1)), 0, 'spacer'); return arr; };
+    if (kind === 'rainbow') {
+      const ring = mode === 'bracelet', n = Math.max(1, Math.floor((this.capMm(mode) + (ring ? 0 : 2.6)) / (mm + 2.6) + 1e-6));
+      for (let i = 0; i < n; i++) { s.push(n <= 18 ? RB[i % RB.length] : RB[Math.floor(i * RB.length / n)]); if (ring || i < n - 1) s.push('spacer'); }
+    }
+    if (kind === 'turq') { const t = ['rapeseed','mint','apple','oilgreen','teal','sky','iceblue','hazeblue']; const k = mode === 'bracelet' ? 4 : 6; s = withSp(spread(t, this.capBeads(mode, mm, k)), k); }
+    if (kind === 'warm') { const n = this.capBeads(mode, mm, 2); for (let i = 0; i < n; i++) s.push(i % 5 === 2 ? 'nanhong' : (i % 5 === 0 ? 'butter' : 'amber')); s = withSp(s, 2); }
+    if (kind === 'quiet') { const n = this.capBeads(mode, mm, 4); for (let i = 0; i < n; i++) s.push(i % 6 === 3 ? 'onyx' : (i % 2 ? 'bone' : 'sandal')); s = withSp(s, 4); }
+    const o = { sel: null }; o[this.key(mode)] = this.mk(s); this.setState(o);
+  }
+  counts(items) { const c = {}; items.forEach((it) => { if (it.s !== 'spacer') c[it.s] = (c[it.s] || 0) + 1; }); return c; }
+  mainOf(items) { const c = this.counts(items); let best = null; Object.keys(c).forEach((k) => { if (!best || c[k] > c[best]) best = k; }); return best; }
+  sync(fromMode) {
+    const toMode = fromMode === 'bracelet' ? 'necklace' : 'bracelet';
+    const src = this.state[this.key(fromMode)], c = this.counts(src), by = this.meta().by;
+    const keys = Object.keys(c).sort((a, b) => c[b] - c[a]).slice(0, 4);
+    if (!keys.length) { this.say('先在' + (fromMode === 'bracelet' ? '手串' : '项链') + '里串几颗'); return; }
+    const hasSp = src.some((it) => it.s === 'spacer'), k = hasSp ? (toMode === 'bracelet' ? 3 : 4) : 0;
+    const mm = this.mmOf(toMode), n = this.capBeads(toMode, mm, k);
+    const tot = keys.reduce((a, x) => a + c[x], 0), main = keys[0];
+    const seq = new Array(n).fill(main), acc = [];
+    keys.slice(1).forEach((x) => { const m = Math.max(1, Math.round(n * c[x] / tot)); for (let j = 0; j < m; j++) acc.push(x); });
+    const lim = Math.round(n * 0.4);
+    if (acc.length > lim) { const r = []; for (let j = 0; j < lim; j++) r.push(acc[Math.floor(j * acc.length / lim)]); acc.length = 0; r.forEach((x) => acc.push(x)); }
+    acc.sort((a, b) => by[a].order - by[b].order);
+    acc.forEach((x, j) => { seq[Math.min(n - 1, Math.floor((j + 0.5) * n / acc.length))] = x; });
+    for (let j = k; j >= 1; j--) seq.splice(Math.round(j * n / (k + 1)), 0, 'spacer');
+    const o = { sel: null }; o[this.key(toMode)] = this.mk(seq); this.setState(o);
+    this.say((toMode === 'bracelet' ? '手串' : '项链') + '已按「' + by[main].n + '」为主石重串');
+  }
+  recipe(items) {
+    const by = this.meta().by, seq = [];
+    items.forEach((it) => { const n = by[it.s].n, l = seq[seq.length - 1]; if (l && l.n === n) l.c++; else seq.push({ n: n, c: 1 }); });
+    return seq.length ? seq.map((x) => x.c > 1 ? x.n + '×' + x.c : x.n).join(' · ') : '（空）';
+  }
+
+  renderVals() {
+    const M = this.meta(), by = M.by, st = this.state, tab = this.tab(), mode = this.mode();
+    const isBr = mode === 'bracelet', k = this.key(mode), items = st[k], mm = this.mmOf(mode);
+    const viewport = st.W || 393;
+    const available = Math.min(1080, viewport) - 2 * (viewport >= 760 ? 28 : 16);
+    const SW = Math.floor(tab === 'build' && viewport >= 760 ? (available - 24) * .49 : Math.min(560, available)) - 2;
+    const SH = Math.round(SW * 0.94), half = SW / 2;
+    const brCy = Math.round(SH * 0.4875), brR = Math.round(SW * 0.3275), setCy = Math.round(SH * 0.3875), setR = Math.round(SW * 0.175);
+    const beadsOnly = (arr) => arr.filter((it) => it.s !== 'spacer').length;
+    const hdrRB = ['nanhong','coral','rose','amber','butter','bone','mint','apple','teal','sky','lapis','sugilite','nanhong','coral','rose','amber'];
+    const hdr = []; hdrRB.forEach((s, i) => { hdr.push({ s: s, seed: 300 + i, isBead: true, isSp: false }); if (i % 4 === 3 && i < 15) hdr.push({ s: 'gold', seed: 0, isBead: false, isSp: true }); });
+
+    // 工作台
+    const P = this.neckPath(half, -6, Math.round(SW * 0.4386), Math.round(SH * 0.819));
+    const lay = isBr ? this.ringLayout(items, mm, half, brCy, brR) : this.neckLayout(items, mm, st.nkLen, P);
+    const sel = st.sel && st.sel.mode === mode ? st.sel : null;
+    const slots = lay.map((q) => ({
+      s: q.it.s, seed: q.it.id, isB: q.it.s !== 'spacer', isSp: q.it.s === 'spacer',
+      l: (q.x - q.w / 2).toFixed(1), t: (q.y - q.h / 2).toFixed(1), w: q.w.toFixed(1), h: q.h.toFixed(1), rot: q.rot.toFixed(1),
+      cls: sel && sel.i === q.i ? 'on' : '', label: by[q.it.s].n + '，第 ' + (q.i + 1) + ' 颗',
+      tap: () => this.setState({ sel: sel && sel.i === q.i ? null : { mode: mode, i: q.i } })
+    }));
+    const pendBase = this.pendantAt(P, st.nkMm * P.L / (st.nkLen * 10), 30);
+    const pend = Object.assign({}, pendBase, {
+      s: st.pendant || 'nanhong', cls: sel && sel.i === -1 ? 'on' : '', label: '主坠：' + (st.pendant ? by[st.pendant].n : ''),
+      tap: () => this.setState({ sel: sel && sel.i === -1 ? null : { mode: 'necklace', i: -1 } })
+    });
+    const leftN = Math.floor((this.capMm(mode) - this.used(items, mm)) / mm + 1e-6);
+    const selItem = sel ? (sel.i === -1 ? { s: st.pendant } : items[sel.i]) : null;
+
+    // 套组
+    const SP = P;
+    const setNkLay = this.neckLayout(st.nk, st.nkMm, st.nkLen, SP).map((q) => ({ s: q.it.s, seed: q.it.id, isB: q.it.s !== 'spacer', isSp: q.it.s === 'spacer', l: (q.x - q.w / 2).toFixed(1), t: (q.y - q.h / 2).toFixed(1), w: q.w.toFixed(1), h: q.h.toFixed(1), rot: q.rot.toFixed(1) }));
+    const setBrLay = this.ringLayout(st.br, st.brMm, half, setCy, setR).map((q) => ({ s: q.it.s, seed: q.it.id, isB: q.it.s !== 'spacer', isSp: q.it.s === 'spacer', l: (q.x - q.w / 2).toFixed(1), t: (q.y - q.h / 2).toFixed(1), w: q.w.toFixed(1), h: q.h.toFixed(1), rot: q.rot.toFixed(1) }));
+    const setPend = Object.assign({}, this.pendantAt(SP, st.nkMm * SP.L / (st.nkLen * 10), 30), { s: st.pendant || 'nanhong' });
+
+    const cB = this.counts(st.br), cN = this.counts(st.nk);
+    if (st.pendant) cN[st.pendant] = (cN[st.pendant] || 0) + 1;
+    const sharedK = Object.keys(cB).filter((x) => cN[x]).sort((a, b) => by[a].order - by[b].order);
+    const union = {}; Object.keys(cB).concat(Object.keys(cN)).forEach((x) => { union[x] = 1; });
+    let w = 0, c = 0, n = 0;
+    [cB, cN].forEach((cc) => Object.keys(cc).forEach((x) => { const t = by[x].t; if (t === 'warm') w += cc[x]; else if (t === 'cool') c += cc[x]; else n += cc[x]; }));
+    const tot = w + c + n;
+    const percentages = [w, c, n].map((count) => tot ? 100 * count / tot : 0);
+    const rounded = percentages.map(Math.floor);
+    if (tot) {
+      const remainder = 100 - rounded.reduce((sum, value) => sum + value, 0);
+      const order = [0, 1, 2].sort((a, b) => (percentages[b] - rounded[b]) - (percentages[a] - rounded[a]));
+      order.slice(0, remainder).forEach((index) => rounded[index]++);
+    }
+    const [warmPct, coolPct, neuPct] = rounded;
+    const nkMain = this.mainOf(st.nk), brMain = this.mainOf(st.br);
+    const tips = [];
+    if (!sharedK.length && nkMain) tips.push({ dot: nkMain, text: '两件没有共用石种。给手串加 2–3 颗项链主石「' + by[nkMain].n + '」，就能前后呼应。' });
+    else if (sharedK.length) tips.push({ dot: sharedK[0], text: '共用「' + sharedK.map((x) => by[x].n).join('、') + '」，两件已经互相呼应。' });
+    if (w + c > 0) {
+      const r = w / (w + c);
+      if (c === 0) tips.push({ dot: 'teal', text: '整体全是暖色，加一颗蓝绿松石或青金石做冷色对比。' });
+      else if (w === 0) tips.push({ dot: 'nanhong', text: '整体全是冷色，加一颗南红或蜜蜡做暖色点睛。' });
+      else if (r > 0.4 && r < 0.6) tips.push({ dot: 'amber', text: '冷暖接近各半，让一方当主色、另一方只做点缀，会更有层次。' });
+      else tips.push({ dot: r < 0.5 ? 'teal' : 'nanhong', text: (r < 0.5 ? '冷色为主、暖色点睛' : '暖色为主、冷色点睛') + '，主次分明。' });
+    }
+    const spB = st.br.some((it) => it.s === 'spacer'), spN = st.nk.some((it) => it.s === 'spacer');
+    if (spB !== spN) tips.push({ dot: 'gold', text: '只有' + (spB ? '手串' : '项链') + '用了金隔片，另一件也加几枚，金属色就统一了。' });
+    else if (spB) tips.push({ dot: 'gold', text: '两件都有金隔片，金属色统一。' });
+
+    const brBeads = beadsOnly(st.br), nkBeads = beadsOnly(st.nk);
+    const stoneCards = M.list.map((o, i) => ({
+      k: o.k, n: o.n, seed: 500 + i, isB: o.k !== 'spacer', isSp: o.k === 'spacer',
+      tag: o.t === 'warm' ? '暖色' : (o.t === 'cool' ? '冷色' : '中性'),
+      tagColor: o.t === 'warm' ? '#A31E24' : (o.t === 'cool' ? '#156A66' : '#7A5439'),
+      inBr: st.br.filter((it) => it.s === o.k).length, inNk: st.nk.filter((it) => it.s === o.k).length + (st.pendant === o.k ? 1 : 0),
+      addBr: () => { this.addStone('bracelet', o.k); }, addNk: () => { this.addStone('necklace', o.k); }
+    }));
+
+    return {
+      headerNote: tab === 'set' ? '手串 ' + brBeads + ' 颗\n项链 ' + nkBeads + ' 颗' : (tab === 'stones' ? '石谱' : (isBr ? '手串' : '项链') + ' · ' + mm + 'mm'),
+      hdr: hdr,
+      isBuild: tab === 'build', isSet: tab === 'set', isStones: tab === 'stones',
+      tabBuild: tab === 'build' ? 'on' : '', tabSet: tab === 'set' ? 'on' : '', tabStones: tab === 'stones' ? 'on' : '',
+      goBuild: () => this.setState({ tab: 'build' }), goSet: () => this.setState({ tab: 'set', sel: null }), goStones: () => this.setState({ tab: 'stones', sel: null }),
+      segBr: isBr ? 'on' : '', segNk: isBr ? '' : 'on',
+      toBracelet: () => this.setState({ mode: 'bracelet', sel: null }), toNecklace: () => this.setState({ mode: 'necklace', sel: null }),
+      isBr: isBr, isNk: !isBr, cord: P.cord, centerTop: Math.round(SH * (isBr ? 0.35 : 0.2875)),
+      SW: SW, SH: SH, half: half, brCy: brCy, brR: brR, stageH: SH + 10, centerLeft: Math.round(half - 75), spinOrigin: half + 'px ' + setCy + 'px',
+      beadCount: beadsOnly(items) + (!isBr && st.pendant ? 1 : 0),
+      specLine: isBr ? mm + 'mm · 16cm 手围' : mm + 'mm · ' + st.nkLen + 'cm',
+      leftLine: leftN > 0 ? '还可加 ' + leftN + ' 颗' : '已串满',
+      slots: slots, hasPendant: !!st.pendant && (tab === 'set' || !isBr), pend: pend,
+      hasSel: !!selItem && !!selItem.s, selName: selItem && selItem.s ? by[selItem.s].n : '',
+      selPos: sel ? (sel.i === -1 ? '主坠' : '第 ' + (sel.i + 1) + ' 颗') : '',
+      canPendant: !isBr && !!sel && sel.i >= 0 && selItem && selItem.s !== 'spacer',
+      selLeft: () => this.moveSel(-1), selRight: () => this.moveSel(1), selRemove: () => this.removeSel(), selClear: () => this.setState({ sel: null }),
+      selPendant: () => { const s = selItem.s; this.setState({ pendant: s, sel: null }); this.say('已把「' + by[s].n + '」设为主坠'); },
+      modeName: isBr ? '手串' : '项链',
+      mmChips: (isBr ? [6, 8, 10, 12, 14] : [4, 6, 8, 10, 12]).map((v) => ({ label: v + 'mm', cls: v === mm ? 'on' : '', tap: () => { const o = {}; o[isBr ? 'brMm' : 'nkMm'] = v; this.setState(o); } })),
+      lenChips: isBr ? [] : [40, 45, 50, 60].map((v) => ({ label: v + 'cm', cls: v === st.nkLen ? 'on' : '', tap: () => this.setState({ nkLen: v }) })),
+      palette: M.list.map((o, i) => ({ k: o.k, n: o.n, short: o.short, seed: 100 + i, isB: o.k !== 'spacer', isSp: o.k === 'spacer', tap: () => this.addStone(mode, o.k) })),
+      preRainbow: () => this.preset('rainbow'), preTurq: () => this.preset('turq'), preWarm: () => this.preset('warm'), preQuiet: () => this.preset('quiet'),
+      preClear: () => { const o = { sel: null }; o[k] = []; this.setState(o); },
+      setCord: SP.cord, setNk: setNkLay, setBr: setBrLay, setPend: setPend,
+      spinCls: this.props.spin === false ? '' : 'spin', nkLen: st.nkLen,
+      shared: sharedK.map((x, i) => ({ k: x, n: by[x].n, seed: 700 + i })), noShared: !sharedK.length,
+      sharedN: sharedK.length, unionN: Object.keys(union).length,
+      warmPct: warmPct, coolPct: coolPct, neuPct: neuPct, tips: tips,
+      syncBr: () => this.sync('necklace'), syncNk: () => this.sync('bracelet'),
+      copyRecipe: () => this.copyRecipe(),
+      brRecipe: this.recipe(st.br), nkRecipe: this.recipe(st.nk) + (st.pendant ? ' · 主坠 ' + by[st.pendant].n : ''),
+      stoneCards: stoneCards,
+      hasToast: !!st.toast, toast: st.toast
+    };
+  }
+}
+</script>
+
+
+<script src="assets/react.min.js"></script>
+<script src="assets/react-dom.min.js"></script>
+<script src="assets/rainbow-stone.js"></script>
+<script src="assets/dc-runtime.js"></script>
+</body></html>
